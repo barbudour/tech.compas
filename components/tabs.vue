@@ -9,18 +9,21 @@
         </div>
         <div class="tabs__content container">
             <div class="tabs__content-before"></div>
-            <div class="tabs__content-menu">
-                <a class="tabs__content-menu-item" v-bind:class="{ 'tabs__content-menu-item--active': item.active }" v-for="(item, index) in menu" :key="index">{{item.title}}</a>
+            <div class="tabs__content-menu" v-if="activeTab === 'project'">
+                <a class="tabs__content-menu-item" @click='scrollTo()' :data-item='item.alias' v-bind:class="{ 'tabs__content-menu-item--active': item.active }" v-for="(item, index) in menu" :key="index">{{item.title}}</a>
+            </div>
+            <div class="tabs__content-menu" v-if="activeTab === 'solutions'">
+                <a class="tabs__content-menu-item" @click='scrollTo()' :data-item='item.alias' v-bind:class="{ 'tabs__content-menu-item--active': item.active }" v-for="(item, index) in menu2" :key="index">{{item.title}}</a>
             </div>
             <div class="tabs__content-inner">
                 <div class="tabs__content-project content" id="project" v-if="activeTab === 'project'">
-                    <h2>Общие сведения</h2>
+                    <h2 data-menu="all" v-observe-visibility="visibilityChanged">Общие сведения</h2>
                     <p>Считается, что ближайшее будущее автотранспорта — переход на электротягу, а будущее электросетей — переход на «умный» режим работы, при котором исчезнет необходимость постоянно уравнивать объемы производства и потребления. Оба перехода невозможны без внедрения эффективных накопителей энергии. Одним из перспективных решений являются литий-ионные накопители энергии.</p>
                     <img src="~assets/img/project-1.jpg" alt="">
                     <p>Оба перехода невозможны без внедрения эффективных накопителей энергии. Одним из перспективных решений являются литий-ионные накопители энергии.</p>
                     <img src="~assets/img/project-2.jpg" alt="">
                     <div class="advantages">
-                        <h2>Преимущества</h2>
+                        <h2 data-menu="advantages" v-observe-visibility="visibilityChanged">Преимущества</h2>
                         <div class="advantages-item">
                             <div class="advantages-item-icon">
                                 <img src="~assets/svg/clock.svg?data" />
@@ -60,7 +63,7 @@
                     </div>
                     <img src="~assets/svg/table.svg?data" alt="" class="table">
                     <div class="characteristics">
-                        <h2>Характеристики</h2>
+                        <h2 data-menu="characteristics" v-observe-visibility="visibilityChanged">Характеристики</h2>
                         <div class="characteristics-item">
                             <h3>НАПРЯЖЕНИЕ</h3>
                             <p>24 – 80 В (широко используемые типы накопителей. Возможна поставка накопителей с напряжением вне указанного диапазона)</p>
@@ -78,7 +81,7 @@
                             <p>Масса ЛИА меньше массы традиционной АБ более чем в 2 раза. Для электропогрузчиков используются специальный комплект догруза.</p>
                         </div>
                     </div>
-                    <h2>Экономическая эффективность</h2>
+                    <h2 data-menu='economy' v-observe-visibility="visibilityChanged">Экономическая эффективность</h2>
                     <h3>Срок окупаемости от 1 года</h3>
                     <p>Срок окупаемости и экономический эффект зависят от ряда параметров: тип аккумуляторной батареи, интенсивности эксплуатации транспортного средства, наличия и объема обменного фонда аккумуляторных батарей.</p>
                     <img class="charts" src="~assets/svg/charts.svg?data" alt="">
@@ -86,7 +89,7 @@
                     <img class="chart" src="~assets/svg/chart.svg?data" alt="">
                 </div>
                 <div class="tabs__content-solutions content" id="solutions" v-if="activeTab === 'solutions'">
-                    <h2>Системы накопления энергии</h2>
+                    <h2 data-menu='system' v-observe-visibility="visibilityChanged2">Системы накопления энергии</h2>
                     <p class="lead">Преимущества использования ЛИАБ в СОПТ по сравнению с традиционными СКАБ</p>
                     <ul>
                         <li>Высокая энергоемкость. ЛИА может отдать 100% емкости не более чем за 1 час. СКАБ - за 10 часов и более.</li>
@@ -127,7 +130,7 @@
                             <li>вывод из эксплуатации зарядных комнат.</li>
                         </ul>
                     </div>
-                    <h2>Промышленная техника</h2>
+                    <h2 data-menu='promtech' v-observe-visibility="visibilityChanged2">Промышленная техника</h2>
                     <h4>Типовые решения накопителей энергии на литий-ионных аккумуляторах</h4>
                     <carousel v-if="isNuxtReady" :margin='16' :items='3' :nav='false' :dots='false' class="slider">
                         <div class="product" v-for="(item, index) in products" :key="index">
@@ -149,7 +152,7 @@
                         <li>для уменьшения времени заряда целесообразно использовать стационарное зарядное устройство с питанием от сети 380 В;</li>
                         <li>стоимость накопителя энергии для электропогрузчика увеличивается за счёт догруза.</li>
                     </ul>
-                    <h2>Городской электротранспорт</h2>
+                    <h2 data-menu='cityelectro' v-observe-visibility="visibilityChanged2">Городской электротранспорт</h2>
                     <p class="lead">Основные преимущества электробуса, как городского транспортного средства:</p>
                     <ul>
                         <li>Отсутствие вредных выхлопов в атмосферу</li>
@@ -164,7 +167,7 @@
                         <li>Бортовое зарядное устройство</li>
                         <li>Комплект соединительных жгутов</li>
                     </ul>
-                    <h2>Спец. техника</h2>
+                    <h2 data-menu='spectech' v-observe-visibility="visibilityChanged2">Спец. техника</h2>
                     <h4>Система накопления энергии для работы спецтранспорта в условиях высоких температур и магнитных полей</h4>
                     <p>Для работы спецтранспорта в особых технологических условиях необходима установка СНЭ, которая будет функционировать в штатном режиме, независимо от внешних условий. Изготовлен опытный образец накопителя для эксплуатации парка внутризаводских электротранспортных средств в условиях высоких температур и магнитных полей.</p>
                     <h4>Система накопления энергии для горно-шахтного оборудования</h4>
@@ -179,7 +182,9 @@
             </div>
             <div class="tabs__content-company">
                 <h3 class="tabs__content-company-title">Базовые предприятия</h3>
-                <img :src="require('../assets/img/'+item.img)" :alt="item.title" class="tabs__content-company-logo" v-for="(item, index) in logos" :key="index">
+                <a :href="item.href" v-for="(item, index) in logos" :key="index" class="tabs__content-company-logo">
+                    <img :src="require('../assets/img/'+item.img)" :alt="item.title">
+                </a>
             </div>
             <div class="tabs__content-after"></div>
         </div>
@@ -187,6 +192,11 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueObserveVisibility from 'vue-observe-visibility'
+
+Vue.use(VueObserveVisibility)
+
     const carousel = () => window && window !== undefined ? import("vue-owl-carousel") : null;
     export default {
         components: {
@@ -203,22 +213,28 @@
                     {title: 'Рынок', active: false, alias: 'market'}
                 ],
                 menu: [
-                    {title: 'Общие сведения', active: true},
-                    {title: 'Преимущества', active: false},
-                    {title: 'Характеристики', active: false},
-                    {title: 'Экономическая эффективность', active: false},
-                    {title: 'Документы', active: false}
+                    {title: 'Общие сведения', active: true, alias: 'all'},
+                    {title: 'Преимущества', active: false, alias: 'advantages'},
+                    {title: 'Характеристики', active: false, alias: 'characteristics'},
+                    {title: 'Экономическая эффективность', active: false, alias: 'economy'},
+                    // {title: 'Документы', active: false}
+                ],
+                menu2: [
+                    {title: 'Системы накопления энергии', active: true, alias: 'system'},
+                    {title: 'Пром. техника', active: false, alias: 'promtech'},
+                    {title: 'Городской электротранспорт', active: false, alias: 'cityelectro'},
+                    {title: 'Спец. техника', active: false, alias: 'spectech'}
                 ],
                 logos: [
-                    {title: 'tvel', img: 'tvel.png'},
-                    {title: 'rosatom', img: 'rosatom.png'},
-                    {title: 'nzhk', img: 'nzhk.png'},
-                    {title: 'centertech', img: 'centertech.png'},
-                    {title: 'ensol', img: 'ensol.png'},
-                    {title: 'suhe', img: 'suhe.png'},
-                    {title: 'avl', img: 'avl.png'},
-                    {title: 'cleanenergy', img: 'cleanenergy.png'},
-                    {title: 'global', img: 'global.png'}
+                    {title: 'tvel', img: 'tvel.png', href: 'https://www.tvel.ru/'},
+                    {title: 'rosatom', img: 'rosatom.png', href: 'https://www.rosatom.ru/'},
+                    {title: 'nzhk', img: 'nzhk.png', href: 'http://www.nccp.ru/'},
+                    {title: 'centertech', img: 'centertech.png', href: 'https://centrotech.ru/'},
+                    {title: 'ensol', img: 'ensol.png', href: 'http://www.ensoltech.ru/'},
+                    {title: 'suhe', img: 'suhe.png', href: 'http://xn--q1aeg6a.xn--p1ai/'},
+                    {title: 'avl', img: 'avl.png', href: 'https://www.avl.com/'},
+                    {title: 'cleanenergy', img: 'cleanenergy.png', href: 'https://clean-energy.ru/'},
+                    {title: 'global', img: 'global.png', href: 'http://www.global-avtomatika.ru/'}
                 ],
                 products: [
                     {
@@ -358,6 +374,41 @@
                     value.active = false;
                 });
                 item.active = true
+            },
+            visibilityChanged (isVisible, entry) {
+                let menu = this.menu;
+                let target = entry.target.dataset.menu;
+
+                if (isVisible) {
+                    menu.forEach(function(item){
+                        let alias = item.alias
+                        if (alias === target) {
+                            item.active = true
+                        } else {
+                            item.active = false
+                        }
+                    });
+                }
+            },
+            visibilityChanged2 (isVisible, entry) {
+                let menu = this.menu2;
+                let target = entry.target.dataset.menu;
+
+                if (isVisible) {
+                    menu.forEach(function(item){
+                        let alias = item.alias
+                        if (alias === target) {
+                            item.active = true
+                        } else {
+                            item.active = false
+                        }
+                    });
+                }
+            },
+            scrollTo() {
+                let target = event.target.dataset.item;
+                let el = document.querySelector(`[data-menu='${target}']`)
+                el.scrollIntoView({block: "center", behavior: "smooth"});
             }
         },
         mounted () {
@@ -738,6 +789,8 @@
             }
 
             &-logo {
+                display: block;
+                position: relative;
                 &:not(:last-child) {
                     margin: 0 0 45px;
                 }

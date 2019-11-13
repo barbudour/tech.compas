@@ -3,33 +3,37 @@
         <div class="intro__before"></div>
         <div class="intro__container">
             <div class="intro__slider">
-                <div class="intro__slider-main">
-                    <carousel v-if="isNuxtReady" :items='1' :nav='false' :dots='false'>
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                        <img src="https://placeimg.com/708/398/tech" alt="">
-                    </carousel>
+                <div>
+                    <client-only>
+                        <slick-slide class="intro__slider-main" ref="slick" :options="slickOptions">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                            <img src="https://placeimg.com/708/398/tech" alt="">
+                        </slick-slide>
+                    </client-only>
                 </div>
-                <div class="intro__slider-small">
-                    <carousel v-if="isNuxtReady" :margin='10' :items='8' :nav='false' :dots='false'>
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    <img src="https://placeimg.com/80/80/tech" alt="">
-                    </carousel>
+                <div>
+                    <client-only>
+                        <!-- <slick-slide class="intro__slider-small" ref="slick" :options="slickOptions">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                            <img src="https://placeimg.com/80/80/tech" alt="">
+                        </slick-slide> -->
+                    </client-only>
                 </div>
             </div>
             <div class="intro__info">
@@ -50,7 +54,7 @@
                     </div>
                 </div>
                 <div class="intro__info-tags">
-                    <a href="#" class="intro__info-tag" v-for="(item, index) in tags" :key="index">{{item.title}}</a>
+                    <a :href="item.href" class="intro__info-tag" v-for="(item, index) in tags" :key="index">{{item.title}}</a>
                 </div>
             </div>
         </div>
@@ -59,6 +63,7 @@
 </template>
 
 <script>
+import 'slick-carousel/slick/slick.css'
     const carousel = () => window && window !== undefined ? import("vue-owl-carousel") : null;
     export default {
         components: {
@@ -66,6 +71,18 @@
         },
         data() {
             return {
+                slickOptions: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false,
+                    asNavFor: '.intro__slider-small'
+                },
+                slickOptions2: {
+                    slidesToShow: 8,
+                    slidesToScroll: 1,
+                    arrows: false,
+                    asNavFor: '.intro__slider-main'
+                },
                 isNuxtReady: false,
                 directions: [
                     {title: 'Технологии и продукции не ядерного назначения'},
@@ -81,11 +98,11 @@
                     {title: 'Системы телекоммуникации'}
                 ],
                 tags: [
-                    {title: 'Аккумулятор'},
-                    {title: 'Химический источник тока'},
-                    {title: 'Росатом'},
-                    {title: 'Электро-транспорт'},
-                    {title: 'ТВЭЛ'}
+                    {title: 'Аккумулятор', href: 'https://api.ispras.ru/demo/vizontia'},
+                    {title: 'Химический источник тока', href: 'https://api.ispras.ru/demo/vizontia'},
+                    {title: 'Росатом', href: 'https://api.ispras.ru/demo/vizontia'},
+                    {title: 'Электро-транспорт', href: 'https://api.ispras.ru/demo/vizontia'},
+                    {title: 'ТВЭЛ', href: 'https://api.ispras.ru/demo/vizontia'}
                 ]
             }
         },
@@ -100,7 +117,6 @@
         },
     }
 </script>
-
 <style lang="scss" scoped>
 .intro {
     padding: 30px 0 40px;

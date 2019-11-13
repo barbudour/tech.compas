@@ -3,37 +3,17 @@
         <div class="intro__before"></div>
         <div class="intro__container">
             <div class="intro__slider">
-                <div>
-                    <client-only>
-                        <slick-slide class="intro__slider-main" ref="slick" :options="slickOptions">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                            <img src="https://placeimg.com/708/398/tech" alt="">
-                        </slick-slide>
-                    </client-only>
+                <div class="intro__slider-main" v-swiper:mySwiper="swiperOptionMain">
+                    <div class="swiper-wrapper">
+                        <div class="intro__slider-main-slide swiper-slide" v-for="(item, index) in photos" :key='index' :style='"background-image: url(./photos/"+item.img+")"'>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <client-only>
-                        <!-- <slick-slide class="intro__slider-small" ref="slick" :options="slickOptions">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                            <img src="https://placeimg.com/80/80/tech" alt="">
-                        </slick-slide> -->
-                    </client-only>
+                <div class="intro__slider-small">
+                    <div class="swiper-wrapper">
+                        <div class="intro__slider-small-slide swiper-slide" v-for="(item, index) in photos" :key='index' :style='"background-image: url(./photos/"+item.img+")"'>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="intro__info">
@@ -63,7 +43,14 @@
 </template>
 
 <script>
-import 'slick-carousel/slick/slick.css'
+import Vue from 'vue';
+import 'swiper/css/swiper.css'
+
+if (process.browser) {
+    const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
+    Vue.use(VueAwesomeSwiper)
+}
+
     const carousel = () => window && window !== undefined ? import("vue-owl-carousel") : null;
     export default {
         components: {
@@ -71,6 +58,19 @@ import 'slick-carousel/slick/slick.css'
         },
         data() {
             return {
+                swiperOptionMain: {
+                    thumbs: {
+                        swiper: {
+                            el: '.intro__slider-small',
+                            slidesPerView: 8,
+                            spaceBetween: 10
+                        }
+                    }
+                },
+                swiperOptionSmall: {
+                    slidesPerView: 8,
+                    spaceBetween: 10
+                },
                 slickOptions: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
@@ -103,6 +103,15 @@ import 'slick-carousel/slick/slick.css'
                     {title: 'Росатом', href: 'https://api.ispras.ru/demo/vizontia'},
                     {title: 'Электро-транспорт', href: 'https://api.ispras.ru/demo/vizontia'},
                     {title: 'ТВЭЛ', href: 'https://api.ispras.ru/demo/vizontia'}
+                ],
+                photos: [
+                    {img: '1.png'},
+                    {img: '2.png'},
+                    {img: '3.png'},
+                    {img: '4.png'},
+                    {img: '5.png'},
+                    {img: '6.png'},
+                    {img: '7.png'},
                 ]
             }
         },
@@ -132,11 +141,22 @@ import 'slick-carousel/slick/slick.css'
             border-radius: 5px;
             overflow: hidden;
             margin: 0 0 10px;
+
+            &-slide {
+                height: 400px;
+                background-size: cover;
+                background-position: center;
+            }
         }
         &-small {
-            .owl-item {
-                border-radius: 5px!important;
-                overflow: hidden!important;
+            &-slide {
+                border-radius: 5px;
+                width: 80px;
+                height: 80px;
+                margin: 0 10px 0 0;
+                background-size: cover;
+                background-position: center;
+                cursor: pointer;
             }
         }
     }
